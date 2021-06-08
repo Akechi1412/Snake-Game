@@ -1,7 +1,7 @@
 #pragma once 
 #include <stdio.h>
 #include <conio.h>
-#include "windows.h" 
+#include <windows.h> 
 
 #define KEY_NONE	-1
 
@@ -48,7 +48,7 @@ void setColor(WORD color)
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
 //============== hide or show cursor===========//
-void showCur(int CursorVisibility)
+void showCur(BOOL CursorVisibility)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO ConCurInf;
@@ -110,29 +110,35 @@ void disableResizeWindow()
 	SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_SIZEBOX);
 }
 //=========Customize close, min, max============//
-void disableCtrButton(int Close, int Min, int Max)
+void disableCtrButton(BOOL close, BOOL min, BOOL max)
 {
 	HWND hWnd = GetConsoleWindow();
 	HMENU hMenu = GetSystemMenu(hWnd, 0);
 
-	if (Close == 1)
+	if (close == 1)
 	{
 		DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
 	}
-	if (Min == 1)
+	if (min == 1)
 	{
 		DeleteMenu(hMenu, SC_MINIMIZE, MF_BYCOMMAND);
 	}
-	if (Max == 1)
+	if (max == 1)
 	{
 		DeleteMenu(hMenu, SC_MAXIMIZE, MF_BYCOMMAND);
 	}
 }
-//===============temporarily hide scrollbars=============//
-void showScrollbar(BOOL Show)
-{
-	HWND hWnd = GetConsoleWindow();
-	ShowScrollBar(hWnd, SB_BOTH, Show);
+//===============hide scrollbars=============//
+void hideScrollbar() {
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    GetConsoleScreenBufferInfo(handle, &info);
+    COORD new_size = 
+    {
+        info.srWindow.Right - info.srWindow.Left + 1,
+        info.srWindow.Bottom - info.srWindow.Top + 1
+    };
+    SetConsoleScreenBufferSize(handle, new_size);
 }
 //=============set color for text and block containing text===========//
 void setBothColor(int backgound_color, int text_color)
@@ -165,4 +171,10 @@ void SetScreenBufferSize(SHORT width, SHORT height)
     NewSize.Y = height;
 
     SetConsoleScreenBufferSize(hStdout, NewSize);
+}
+//========set the size and position for the console window===========//
+void setWindowConsole(SHORT left, SHORT top, SHORT right, SHORT bottom) {
+	HWND hwnd = GetConsoleWindow();
+	RECT rect = {left, top, right, bottom};
+	MoveWindow(hwnd, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, TRUE);	
 }

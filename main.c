@@ -5,19 +5,27 @@
 #include "console.h" 
 #include <math.h>
 
-#define MIN_Y_BOX 2 // y min coordinate of box
-#define MIN_X_BOX 6 // x min coordinate of box
-#define MAX_Y_BOX 24 //  y max coordinate of box
-#define MAX_X_BOX 85 //  x max coordinate of box
+#define MIN_Y_BOX 3 // y min coordinate of box
+#define MIN_X_BOX 3 // x min coordinate of box
+#define MAX_Y_BOX 17 //  y max coordinate of box
+#define MAX_X_BOX 50 //  x max coordinate of box
 #define MENU_LIST 5 // number of options in the menu
 #define MIN_Y_MENU 2 // y min coordinate of menu
 #define MIN_X_MENU 40 // x min coordinate of menu
 #define MAX_Y_MENU 22 // y max coordinate of menu
-#define MAX_X_MENU 80 // x max coordinate of menu
+#define MAX_X_MENU 80 // x max coordinate of menus
 #define NUM_MODE 2 // number of game mode
 #define NUM_LEVEL 4 // mumber of game level
-// #define WIDTH_SCREEN 30
-// #define HEIGHT_SCREEN 20
+#define MIN_X_CONSOLE 0
+#define MIN_Y_CONSOLE 0
+#define MAX_X_CONSOLE 0
+#define MAX_Y_CONSOLE 0
+
+const short X_RIGHT = MAX_X_BOX + 10;
+const short Y_TOP = MIN_Y_BOX - 2;
+const short Y_BOTTOM = MAX_Y_BOX + 2;
+const short Y_RIGHT_TOP = MIN_Y_BOX;
+const short X_BOTTOM_LEFT = MIN_X_BOX + 2; 
 
 typedef struct {
     int x;
@@ -108,7 +116,7 @@ enum level {
 
 int main(int argc, char* argv[]) {
     setupConsole();
-    gameLoadingScreen();
+    // gameLoadingScreen();
     menu();
     return 0;
 }
@@ -851,7 +859,7 @@ void scoreUpdate() {
         tmp /= 10;
     }
     setBothColor(2, 7);
-    gotoxy(105 - count / 2, 9);
+    gotoxy(X_RIGHT - count / 2, Y_RIGHT_TOP + 6);
     printf("%d", score);
 }
 
@@ -891,69 +899,63 @@ void aboutGame() {
 
 void drawGame() {
     setBothColor(1, 7);
-    gotoxy(102, 2);
-    printf("%-7s", "playerName");
-    gotoxy(103, 7);
+    gotoxy(X_RIGHT - 5, Y_RIGHT_TOP);
+    printf("%-7s", "PLAYER NAME");
+    gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 4);
     printf("%-5s", "SCORE");
-    gotoxy(103, 12);
+    gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 8);
     printf("%-5s", "MODE");
-    gotoxy(103, 17);
+    gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 12);
     printf("%-5s", "LEVEL");
-    gotoxy(101, 22);
-    printf("%-9s", "COUNTDOWN");
-
     setBothColor(2, 7);
-    gotoxy(105 - (strlen(playerName) - 1) / 2, 4);
+    gotoxy(X_RIGHT - (strlen(playerName) - 1) / 2, Y_RIGHT_TOP + 2);
     printf("%s", playerName);
 
-    gotoxy(105, 9);
+    gotoxy(X_RIGHT, Y_RIGHT_TOP + 6);
     printf("%d", score);
 
     if (mode == 0) {
-        gotoxy(102, 14);
+        gotoxy(X_RIGHT - 3, Y_RIGHT_TOP + 10);
         printf("%-7s", "Classic");
     }
     else if (mode == 1) {
-        gotoxy(102, 14);
+        gotoxy(X_RIGHT - 3, Y_RIGHT_TOP + 10);
         printf("%-7s", "Modern");
     }
     if (level == 1) {
-        gotoxy(103, 19);
+        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
         printf("%-5s", "Noob");
     }
     else if (level == 2) {
-        gotoxy(102, 19);
+        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
         printf("%-7s", "Normal");
     }
     else if (level == 3) {
-        gotoxy(101, 19);
+        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
         printf("%-9s", "Difficult");
     }
     else if (level == 4) {
-        gotoxy(99, 19);
+        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
         printf("%-13s", "Professional");
     }
 
-    gotoxy(103, 24);
-    printf("%-5s", "Wait!");
-
     setBothColor(1, 7);
-    gotoxy(5, 27);
+    gotoxy(X_BOTTOM_LEFT, Y_BOTTOM);
     printf("W, S, A, D:");
     setBothColor(2, 7);
-    gotoxy(17, 27);
+    gotoxy(X_BOTTOM_LEFT + 15, Y_BOTTOM);
     printf("Up, Dow, Left, Right");
     setBothColor(1, 7);
-    gotoxy(46, 27);
+    gotoxy(X_BOTTOM_LEFT, Y_BOTTOM + 2);
     printf("Space:");
     setBothColor(2, 7);
-    gotoxy(53, 27);
+    gotoxy(X_BOTTOM_LEFT + 10, Y_BOTTOM + 2);
     printf("Pause/Continue");
     setBothColor(1, 7);
-    gotoxy(77, 27);
+    gotoxy(X_BOTTOM_LEFT + 28, Y_BOTTOM + 2);
     printf("Esc:");
     setBothColor(2, 7);
-    gotoxy(82, 27);
+    gotoxy(X_BOTTOM_LEFT + 36, Y_BOTTOM + 2);
     printf("Exit");
     setBothColor(11, 0);
     gotoxy(105, 29);
