@@ -400,9 +400,7 @@ void setupConsole() {
     disableCtrButton(0, 0, 1);
     disableResizeWindow();
     showCur(0);
-    showScrollbar(0);
-    // SetWindowSize(1000, 500);
-    // SetScreenBufferSize(1000, 500);
+    hideScrollbar();
 }
 
 void moveSnake() {
