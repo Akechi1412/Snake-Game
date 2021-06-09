@@ -11,9 +11,9 @@
 #define MAX_X_BOX 50 //  x max coordinate of box
 #define MENU_LIST 5 // number of options in the menu
 #define MIN_Y_MENU 2 // y min coordinate of menu
-#define MIN_X_MENU 40 // x min coordinate of menu
+#define MIN_X_MENU 15 // x min coordinate of menu
 #define MAX_Y_MENU 22 // y max coordinate of menu
-#define MAX_X_MENU 80 // x max coordinate of menus
+#define MAX_X_MENU 55 // x max coordinate of menus
 #define NUM_MODE 2 // number of game mode
 #define NUM_LEVEL 4 // mumber of game level
 #define MIN_X_CONSOLE 0
@@ -404,7 +404,7 @@ void initGame() {
 
 void setupConsole() {
     SetConsoleTitle("Snake Game");
-    disableSelection();
+    setWindowConsole(100, 100, 680, 530);
     disableCtrButton(0, 0, 1);
     disableResizeWindow();
     showCur(0);
@@ -691,7 +691,7 @@ void inGame() {
         gotoxy(MIN_X_MENU + 17, MIN_Y_MENU);
         printf("NEW GAME");
         for (int i = 0; i < NUM_LEVEL; ++i) {
-            int k = i + 4;
+            int k = i + 6;
             if (pointer == i) {
                 setBothColor(0, 9);
                 gotoxy((MAX_X_MENU + MIN_X_MENU) / 2 - strlen(p_level[i]) / 2 - 3, MIN_Y_MENU + i + k);
@@ -761,24 +761,92 @@ void quitGame() {
     gotoxy(MIN_X_MENU + 18, MIN_Y_MENU);
     printf("QUIT");
     setBothColor(15, 6);
-    gotoxy(43, 10);
-    printf("Are you sure want to quitGame the game?");
-    gotoxy(47, 11);
-    printf("You have to choose Y or N!");
-    unsigned char ch = _getch();
+    gotoxy((MAX_X_MENU + MIN_X_MENU) / 2 - 17, (MAX_Y_MENU + MIN_Y_MENU) / 2 - 3);
+    printf("Are you sure want to quit the game?");
+    // gotoxy((MAX_X_MENU + MIN_X_MENU) / 2 - 13, (MAX_Y_MENU + MIN_Y_MENU) / 2 - 1);
+    // printf("You have to choose Y or N!");
+    // unsigned char ch = _getch();
+    // while (1) {
+    //     if (ch == 'y' || ch == 'Y') {
+    //         Sleep(50);
+    //         clrscr();
+    //         system("color F0");
+    //         exit(0);
+    //     }
+    //     else if (ch == 'n' || ch == 'N') {
+    //         Sleep(50);
+    //         menu();
+    //     }
+    //     else {
+    //         ch = _getch();
+    //     }
+    // }
+    const char* p_select[] = {
+        "QUIT",
+        "MENU"
+    };
+    int pointer = 0;
     while (1) {
-        if (ch == 'y' || ch == 'Y') {
-            Sleep(50);
-            clrscr();
-            system("color F0");
-            exit(0);
+        // show selector list
+        for (int i = 0; i < 2; ++i) {
+            if (pointer == i) {
+                setBothColor(0, 9);
+                if (i == 0) {
+                    gotoxy(MIN_X_MENU + 5, MAX_Y_MENU - 8);
+                    printf(" %c%s%c ", 175, p_select[i], 174);
+                }
+                else if (i == 1) {
+                    gotoxy(MAX_X_MENU - 12, MAX_Y_MENU - 8);
+                    printf("%c%s%c", 175, p_select[i], 174);
+                }
+            }
+            else {
+                setBothColor(0, 14);
+                if (i == 0) {
+                    gotoxy(MIN_X_MENU + 5, MAX_Y_MENU - 8);
+                    printf("  %s  ", p_select[i]);
+                }
+                else if (i == 1) {
+                    gotoxy(MAX_X_MENU - 12, MAX_Y_MENU - 8);
+                    printf(" %s ",  p_select[i]);
+                }
+            }
         }
-        else if (ch == 'n' || ch == 'N') {
-            Sleep(50);
-            menu();
-        }
-        else {
-            ch = _getch();
+        // keyboard handling
+        while (1) {
+            unsigned char choose;
+            if (_kbhit()) {
+                choose = _getch();
+                if (choose == 'a' || choose == 'A') {
+                    if (pointer == 1) {
+                        pointer = 0;
+                    }
+                    else {
+                        pointer = 1;
+                    }
+                    break;
+                }
+                if (choose == 'd' || choose == 'D') {
+                    if (pointer == 0) {
+                        pointer = 1;
+                    }
+                    else {
+                        pointer = 0;
+                    }
+                    break;
+                }
+                if (choose == 13) {
+                    switch (pointer) {
+                    case 0:
+                        exit(0);
+                        break;
+                    case 1:
+                        menu();
+                        break;
+                    }
+                }
+                Sleep(100);
+            }
         }
     }
 }
@@ -798,7 +866,7 @@ void gameMode() {
         gotoxy(MIN_X_MENU + 16, MIN_Y_MENU);
         printf("GAME MODE");
         for (int i = 0; i < NUM_MODE; ++i) {
-            int k = i + 4;
+            int k = i + 8;
             if (pointer == i) {
                 setBothColor(0, 9);
                 gotoxy((MAX_X_MENU + MIN_X_MENU) / 2 - strlen(p_mode[i]) / 2 - 3, MIN_Y_MENU + i + k);
@@ -872,13 +940,13 @@ void aboutGame() {
     printf("ABOUT");
     setBothColor(15, 6);
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 8, MIN_Y_MENU + 3);
-    printf("Legend Snake Game");
+    printf("Akechi Snake Game");
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 6, MIN_Y_MENU + 4);
-    printf("Version 2.0.1");
+    printf("Version 2.0.2");
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 9, MIN_Y_MENU + 6);
     printf("Development Platform ");
-    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 8, MIN_Y_MENU + 7);
-    printf("Console in Windows");
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 15, MIN_Y_MENU + 7);
+    printf("C language in Windows console");
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 4, MIN_Y_MENU + 9);
     printf("Developer");
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 3, MIN_Y_MENU + 10);
@@ -887,6 +955,15 @@ void aboutGame() {
     printf("Contact Info");
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 17, MIN_Y_MENU + 13);
     printf("https://www.facebook.com/akechi1412");
+
+    setBothColor(15, 8);
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 1, MIN_Y_MENU + 5);
+    printf("***");
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 1, MIN_Y_MENU + 8);
+    printf("***");
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 1, MIN_Y_MENU + 11);
+    printf("***");
+
     setBothColor(15, 1);
     gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 15, MIN_Y_MENU + 16);
     printf("Press any key to continue....");
@@ -907,10 +984,18 @@ void drawGame() {
     printf("%-5s", "MODE");
     gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 12);
     printf("%-5s", "LEVEL");
+
+    setBothColor(11, 8);
+    gotoxy(X_RIGHT - 1, Y_RIGHT_TOP + 3);
+    printf("***");
+    gotoxy(X_RIGHT - 1, Y_RIGHT_TOP + 7);
+    printf("***");
+    gotoxy(X_RIGHT - 1, Y_RIGHT_TOP + 11);
+    printf("***");
+
     setBothColor(2, 7);
     gotoxy(X_RIGHT - (strlen(playerName) - 1) / 2, Y_RIGHT_TOP + 2);
     printf("%s", playerName);
-
     gotoxy(X_RIGHT, Y_RIGHT_TOP + 6);
     printf("%d", score);
 
@@ -927,15 +1012,15 @@ void drawGame() {
         printf("%-5s", "Noob");
     }
     else if (level == 2) {
-        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
+        gotoxy(X_RIGHT - 3, Y_RIGHT_TOP + 14);
         printf("%-7s", "Normal");
     }
     else if (level == 3) {
-        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
+        gotoxy(X_RIGHT - 4, Y_RIGHT_TOP + 14);
         printf("%-9s", "Difficult");
     }
     else if (level == 4) {
-        gotoxy(X_RIGHT - 2, Y_RIGHT_TOP + 14);
+        gotoxy(X_RIGHT - 6, Y_RIGHT_TOP + 14);
         printf("%-13s", "Professional");
     }
 
@@ -943,47 +1028,58 @@ void drawGame() {
     gotoxy(X_BOTTOM_LEFT, Y_BOTTOM);
     printf("W, S, A, D:");
     setBothColor(2, 7);
-    gotoxy(X_BOTTOM_LEFT + 15, Y_BOTTOM);
+    gotoxy(X_BOTTOM_LEFT + 12, Y_BOTTOM);
     printf("Up, Dow, Left, Right");
     setBothColor(1, 7);
     gotoxy(X_BOTTOM_LEFT, Y_BOTTOM + 2);
     printf("Space:");
     setBothColor(2, 7);
-    gotoxy(X_BOTTOM_LEFT + 10, Y_BOTTOM + 2);
+    gotoxy(X_BOTTOM_LEFT + 7, Y_BOTTOM + 2);
     printf("Pause/Continue");
     setBothColor(1, 7);
-    gotoxy(X_BOTTOM_LEFT + 28, Y_BOTTOM + 2);
+    gotoxy(X_BOTTOM_LEFT + 23, Y_BOTTOM + 2);
     printf("Esc:");
     setBothColor(2, 7);
-    gotoxy(X_BOTTOM_LEFT + 36, Y_BOTTOM + 2);
+    gotoxy(X_BOTTOM_LEFT + 28, Y_BOTTOM + 2);
     printf("Exit");
     setBothColor(11, 0);
-    gotoxy(105, 29);
-    printf("Version 2.0.1");
+    gotoxy(X_BOTTOM_LEFT + 39, Y_BOTTOM);
+    printf("Akechi Snake Game");
+    gotoxy(X_BOTTOM_LEFT + 39, Y_BOTTOM + 2);
+    printf("  Version 2.0.2  ");
+
+    setBothColor(11, 8);
+    gotoxy(X_BOTTOM_LEFT + 15, Y_BOTTOM + 1);
+    printf("***");
+     gotoxy(X_BOTTOM_LEFT + 46, Y_BOTTOM + 1);
+    printf("***");
 }
 
 void enterPlayerName() {
     clrscr();
     system("color F1");
     drawMenuBox();
-    setBothColor(0, 15);
+    setBothColor(5, 15);
     gotoxy(MIN_X_MENU + 17, MIN_Y_MENU);
     printf("NEW GAME");
     setBothColor(15, 6);
-    gotoxy(53, 8);
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 8, (MIN_Y_MENU + MAX_Y_MENU) / 2 - 4);
     printf("ENTER YOUR NAME!");
+
+    int begin_input = (MIN_X_MENU + MAX_X_MENU) / 2 - 10;
+    int end_input = (MIN_X_MENU + MAX_X_MENU) / 2 + 10;
     setBothColor(2, 2);
-    for (int i = 51; i <= 70; ++i) {
-        gotoxy(i, 10);
+    for (int i = begin_input; i < end_input; ++i) {
+        gotoxy(i, (MIN_Y_MENU + MAX_Y_MENU) / 2 - 2);
         printf("^");
     }
     setBothColor(15, 6);
-    gotoxy(43, 12);
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 16, (MIN_Y_MENU + MAX_Y_MENU) / 2);
     printf("If you don't want to enter a name,");
-    gotoxy(43, 13);
+    gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 16, (MIN_Y_MENU + MAX_Y_MENU) / 2 + 1);
     printf("press enter to continue");
     setBothColor(2, 7);
-    gotoxy(51, 10);
+    gotoxy(begin_input, (MIN_Y_MENU + MAX_Y_MENU) / 2 - 2);
     showCur(1);
     fgets(playerName, sizeof playerName, stdin);
     showCur(0);
@@ -997,13 +1093,13 @@ void enterPlayerName() {
             break;
         }
         setBothColor(2, 2);
-        for (int i = 51; i <= 70; ++i) {
-            gotoxy(i, 10);
+        for (int i = begin_input; i < end_input; ++i) {
+            gotoxy(i, (MIN_Y_MENU + MAX_Y_MENU) / 2 - 2);
             printf("^");
         }
         if (strlen(playerName) - 1 > 20) {
-            for (int i = 71; i < (51 + strlen(playerName)); ++i) {
-                gotoxy(i, 10);
+            for (int i = end_input; i < (begin_input + strlen(playerName)); ++i) {
+                gotoxy(i, (MIN_Y_MENU + MAX_Y_MENU) / 2 - 2);
                 if (i == MAX_X_MENU) {
                     setBothColor(8, 8);
                     printf("=");
@@ -1012,21 +1108,21 @@ void enterPlayerName() {
                 printf(" ");
             }
             setBothColor(15, 4);
-            gotoxy(42, 15);
+            gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 18, (MIN_Y_MENU + MAX_Y_MENU) / 2 + 3);
             printf("Error: Please enter name less than 20");
-            gotoxy(49, 16);
+            gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 18, (MIN_Y_MENU + MAX_Y_MENU) / 2 + 4);
             printf("characters!");
         }
         else if (a && b && c) {
             setBothColor(15, 4);
-            gotoxy(42, 15);
-            printf("Error: Name playerName must begin with a  ");
-            gotoxy(49, 16);
+            gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 18, (MIN_Y_MENU + MAX_Y_MENU) / 2 + 3);
+            printf("Error: Player name must begin with a");
+            gotoxy((MIN_X_MENU + MAX_X_MENU) / 2 - 11, (MIN_Y_MENU + MAX_Y_MENU) / 2 + 4);
             printf("letter or a number!");
         }
 
         setBothColor(2, 7);
-        gotoxy(51, 10);
+        gotoxy(begin_input, (MIN_Y_MENU + MAX_Y_MENU) / 2 - 2);
         showCur(1);
         fgets(playerName, sizeof playerName, stdin);
         showCur(0);
@@ -1115,28 +1211,30 @@ int checkReward() {
 }
 
 void countdown() {
-    gotoxy(103,24);
-    setBothColor(2, 7);
-    printf("  5  ");
+    setBothColor(5, 7);
+    gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 - 6, Y_TOP);
+    printf("COUNTDOWN");
+    gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 + 5, Y_TOP);
+    printf(" 5 ");
     if (count_time >= 1000 && count_time < 2000) {
-        gotoxy(103, 24);
-        printf("  4  ");
+        gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 + 5, Y_TOP);
+        printf(" 4 ");
     }
     else if (count_time >= 2000 && count_time < 3000) {
-        gotoxy(103, 24);
-        printf("  3  ");
+        gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 + 5, Y_TOP);
+        printf(" 3 ");
     }
     else if (count_time >= 3000 && count_time < 4000) {
-        gotoxy(103, 24);
-        printf("  2  ");
+        gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 + 5, Y_TOP);
+        printf(" 2 ");
     }
     else if (count_time >= 4000 && count_time < 5000) {
-        gotoxy(103, 24);
-        printf("  1  ");
+        gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 + 5, Y_TOP);
+        printf(" 1 ");
     }
     else if (count_time >= 5000 && count_time < 5200) {
-        gotoxy(103, 24);
-        printf("  0  ");
+        gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 + 5, Y_TOP);
+        printf(" 0 ");
         setBothColor(11, 11);
         gotoxy(reward.x, reward.y);
         printf("  ");
@@ -1149,9 +1247,9 @@ void countdown() {
 }
 
 void stopCountdown() {
-    setBothColor(2, 7);
-    gotoxy(103, 24);
-    printf("%-5s", "Wait!");
+    setBothColor(11, 11);
+    gotoxy((MIN_X_BOX + MAX_X_BOX) / 2 - 6, Y_TOP);
+    printf("              ");
 }
 
 void highScore() {
@@ -1169,7 +1267,7 @@ void highScore() {
     while (1) {
         // show selector list
         for (int i = 0; i < NUM_MODE; ++i) {
-            int k = i + 4;
+            int k = i + 8;
             if (pointer == i) {
                 setBothColor(0, 9);
                 gotoxy((MAX_X_MENU + MIN_X_MENU) / 2 - strlen(p_mode[i]) / 2 - 3, MIN_Y_MENU + i + k);
