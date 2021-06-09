@@ -116,100 +116,57 @@ enum level {
 
 int main(int argc, char* argv[]) {
     setupConsole();
-    // gameLoadingScreen();
+    gameLoadingScreen();
     menu();
     return 0;
 }
 
 void gameLoadingScreen() {
-    setBothColor(0, 5);                                                    
-    gotoxy(15, 5);
-    printf(".d88888b                    dP");
-    gotoxy(15, 6);
-    printf("88.    \"'                   88");
-    gotoxy(15, 7);
-    printf("`Y88888b. 88d888b. .d8888b. 88  .dP  .d8888b.");
-    gotoxy(15,8);
-    printf("      `8b 88'  `88 88'  `88 88888\"   88ooood8");
-    gotoxy(15, 9);
-    printf("d8'   .8P 88    88 88.  .88 88  `8b. 88.  ...");
-    gotoxy(15, 10);
-    printf(" Y88888P  dP    dP `88888P8 dP   `YP `88888P'");
-    setBothColor(0, 6);
-    gotoxy(15, 11);
-    printf("oooooooooooooooooooooooooooooooooooooooooooooo");
-    setBothColor(0, 5);
-    gotoxy(62, 12);
-    printf(" .88888. ");
-    gotoxy(62, 13);
-    printf("d8'   `88");
-    gotoxy(62, 14);
-    printf("88        .d8888b. 88d8b.d8b. .d8888b.");
-    gotoxy(62, 15);
-    printf("88   YP88 88'  `88 88'`88'`88 88ooood8");
-    gotoxy(62, 16);
-    printf("Y8.   .88 88.  .88 88  88  88 88.  ...");
-    gotoxy(62, 17);
-    printf(" `88888'  `88888P8 dP  dP  dP `88888P'");
-    setBothColor(0, 6);
-    gotoxy(61, 18);
-    printf("ooooooooooooooooooooooooooooooooooooooo");
-    gotoxy(61, 11);
-    printf("o");
-    gotoxy(61, 12);
-    printf("o");
-    gotoxy(61, 13);
-    printf("o");
-    gotoxy(61, 14);
-    printf("o");
-    gotoxy(61, 15);
-    printf("o");
-    gotoxy(61, 16);
-    printf("o");
-    gotoxy(61, 17);
-    printf("o");
-    setBothColor(0, 1);
-    gotoxy(100, 18);
-    printf("#");
 
     Sleep(200);
     setBothColor(15, 15);
-    for (int i = 20; i <= 100; ++i) {
-        gotoxy(i, 24);
+    for (int i = 9; i <= 58; ++i) {
+        gotoxy(i, 21);
         printf("^");
     }
     setBothColor(0, 14);
-    gotoxy(91, 23);
+    gotoxy(49, 20);
     printf("Loading...");
-    for (int i = 20; i <= 52; ++i) {
-        Sleep(50);
+
+    setBothColor(0, 14);
+    gotoxy(60, 21);
+    printf("%3d%%", 0);
+    Sleep(200);
+    for (double i = 8.5; i <= 33; i += 0.5) {
+        Sleep(40);
         setBothColor(0, 14);
-        gotoxy(102, 24);
-        printf("%3d%%", (i - 20) * 5 / 4);
+        gotoxy(60, 21);
+        printf("%3d%%", (int)((i - 8) * 2));
         setBothColor(10, 10);
-        gotoxy(i, 24);
+        gotoxy((int)ceil(i), 21);
         printf("^");
     }
-    for (int i = 52; i <= 96; i += 4) {
-        Sleep(200);
+    for (double i = 33.5; i <= 53; i += 0.5) {
+        Sleep(20);
         setBothColor(0, 14);
-        gotoxy(102, 24);
-        printf("%3d%%", (i - 20) * 5 / 4);
+        gotoxy(60, 21);
+        printf("%3d%%", (int)((i - 8) * 2));
         setBothColor(10, 10);
-        gotoxy(i, 24);
-        printf("^^^^");
+        gotoxy((int)ceil(i), 21);
+        printf("^");
     }
     Sleep(400);
-    for (int i = 96; i <= 100; ++i) {
+    for (int i = 54; i <= 58; ++i) {
         Sleep(200);
         setBothColor(0, 14);
-        gotoxy(102, 24);
-        printf("%3d%%", (i - 20) * 5 / 4);
+        gotoxy(60, 21);
+        printf("%3d%%", (i - 8) * 2);
         setBothColor(10, 10);
-        gotoxy(i, 24);
+        gotoxy(i, 21);
         printf("^");
     }
     Sleep(200);
+    getch();
 }
 
 void drawMenuBox() {
