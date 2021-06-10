@@ -177,7 +177,6 @@ void gameLoadingScreen() {
     gotoxy(64, 13);
     printf("0");
 
-    Sleep(200);
     setBothColor(15, 15);
     for (int i = 9; i <= 58; ++i) {
         gotoxy(i, 21);
@@ -187,6 +186,7 @@ void gameLoadingScreen() {
     gotoxy(49, 20);
     printf("Loading...");
 
+    Sleep(200);
     setBothColor(0, 14);
     gotoxy(60, 21);
     printf("%3d%%", 0);
