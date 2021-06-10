@@ -122,6 +122,60 @@ int main(int argc, char* argv[]) {
 }
 
 void gameLoadingScreen() {
+    setBothColor(0, 5);
+    gotoxy(5, 3);
+    printf(".d8888. d8b   db  .d8b.  db   dD d88888b");
+    gotoxy(5, 4);
+    printf("88'  YP 888o  88 d8' `8b 88 ,8P' 88'");
+    gotoxy(5, 5);
+    printf("`8bo.   88V8o 88 88ooo88 88,8P   88ooooo");
+    gotoxy(5, 6);
+    printf("  `Y8b. 88 V8o88 88~~~88 88`8b   88~~~~~");
+    gotoxy(5, 7);
+    printf("db   8D 88  V888 88   88 88 `88. 88");
+    gotoxy(5, 8);
+    printf("`8888Y' VP   V8P YP   YP YP   YD Y88888P");
+    gotoxy(28, 11);
+    printf(" d888b   .d8b.  .88b  d88. d88888b");
+    gotoxy(28, 12);
+    printf("88' Y8b d8' `8b 88'YbdP`88 88'");
+    gotoxy(28, 13);
+    printf("88      88ooo88 88  88  88 88ooooo");
+    gotoxy(28, 14);
+    printf("88  ooo 88~~~88 88  88  88 88~~~~~");
+    gotoxy(28, 15);
+    printf("88. ~8~ 88   88 88  88  88 88.");
+    gotoxy(28, 16);
+    printf(" Y888P  YP   YP YP  YP  YP Y88888P");
+
+    setBothColor(0, 6);
+    gotoxy(5, 9);
+    printf("ooooooooooooooooooooooo");
+    gotoxy(27, 10);
+    printf("o");
+    gotoxy(27, 11);
+    printf("o");
+    gotoxy(27, 12);
+    printf("o");
+    gotoxy(27, 13);
+    printf("o");
+    gotoxy(27, 14);
+    printf("o");
+    gotoxy(27, 15);
+    printf("o");
+    gotoxy(27, 16);
+    printf("o");
+    gotoxy(27, 17);
+    printf("o");
+    gotoxy(27, 17);
+    printf("ooooooooooooooooooooooooooooooooo");
+
+    setBothColor(0, 1);
+    gotoxy(60, 17);
+    printf("#");
+    setBothColor(4, 4);
+    gotoxy(64, 13);
+    printf("0");
 
     Sleep(200);
     setBothColor(15, 15);
@@ -166,7 +220,6 @@ void gameLoadingScreen() {
         printf("^");
     }
     Sleep(200);
-    getch();
 }
 
 void drawMenuBox() {
@@ -429,6 +482,7 @@ void controlSnake() {
 
 void runGame() {
     Sleep(1000);
+    count_score = 0;
     delay = 5 * (int)pow(level, 2) - 45 * level + 120;
     while (1) {
         moveSnake();
