@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "console.h" 
 #include <math.h>
+#include "console.h" 
 
 #define MIN_Y_BOX 3 // y min coordinate of box
 #define MIN_X_BOX 3 // x min coordinate of box
@@ -16,10 +16,6 @@
 #define MAX_X_MENU 55 // x max coordinate of menus
 #define NUM_MODE 2 // number of game mode
 #define NUM_LEVEL 4 // mumber of game level
-#define MIN_X_CONSOLE 0
-#define MIN_Y_CONSOLE 0
-#define MAX_X_CONSOLE 0
-#define MAX_Y_CONSOLE 0
 
 const short X_RIGHT = MAX_X_BOX + 10;
 const short Y_TOP = MIN_Y_BOX - 2;
@@ -41,7 +37,7 @@ void gameLoadingScreen();
 void menu();
 int ateFood(); // handle when snake has eaten food
 void classicMode(); 
-void runGame(); 
+void loopGame(); 
 void setupConsole(); 
 void initGame(); // initialize the game
 int checkDot(); // check if "Dot food" is the same as "Dot snake[]"
@@ -92,7 +88,7 @@ Dot reward;
 SaveScore high_score_classic[20];
 SaveScore high_score_modern[20]; 
 int count_score = 0; // count the number of score update
-int count_time = 0; // time since reward appeared
+float count_time = 0; // time since reward appeared
 
 // Direction for snake
 enum direction {
@@ -480,11 +476,14 @@ void controlSnake() {
     }
 }
 
-void runGame() {
+void loopGame() {
     Sleep(1000);
     count_score = 0;
     delay = 5 * (int)pow(level, 2) - 45 * level + 120;
+    clock_t start_loop, end_loop; // loop start and end time
+    double delta_time; //Time to execute a loop(start_loop - end_loop)
     while (1) {
+        start_loop = clock();
         moveSnake();
         controlSnake();
         selfBite();
@@ -525,12 +524,12 @@ void runGame() {
                 count_time = 0;
                 do {
                     drawReward();
-                    if (checkDots == 0) {
+                    if (!checkDots()) {
                         gotoxy(reward.x, reward.y);
                         printf("  ");
                     }
                 }           
-                while (checkDots == 0);
+                while (!checkDots());
                 checkDrawReward = 1;
             }
             countdown();
@@ -542,7 +541,7 @@ void runGame() {
                 do {
                     drawFood();
                 }               
-                while (checkDot() == 0);
+                while (!checkDot());
             }
             else if (count_time >= 5200) {
                 count_score = 0;
@@ -550,20 +549,22 @@ void runGame() {
                 do {
                     drawFood();
                 }               
-                while (checkDot() == 0);
+                while (!checkDot());
             }
         }
         // handling end game
         gameOver();
         // handling delay (speed)
         if (derection == 0 || derection == 1) {
-            count_time += (int)(2.5 * delay);
             Sleep((int)(2.5*delay));
         }
         else {
-            count_time += delay;
             Sleep(delay);
         }
+        // Calculate delta time
+        end_loop = clock();
+        delta_time = (double)(end_loop - start_loop) / CLOCKS_PER_SEC * 1000; // convert clock -> second -> milisecond
+        count_time += (float)delta_time;
     }
 }
 
@@ -594,7 +595,7 @@ void gameOver() {
         //         Sleep(200);
         //         initGame();
         //         drawGame();
-        //         runGame();
+        //         loopGame();
         //     }
         //     else if (ch == 'n' || ch == 'N') {
         //         Sleep(50);
@@ -664,7 +665,7 @@ void gameOver() {
                                 Sleep(200);
                                 initGame();
                                 drawGame();
-                                runGame();
+                                loopGame();
                             break;
                             case 1:
                                 menu();
@@ -826,7 +827,7 @@ void inGame() {
                     enterPlayerName();
                     initGame();
                     drawGame();
-                    runGame();
+                    loopGame();
                     break;
                 }
             }
