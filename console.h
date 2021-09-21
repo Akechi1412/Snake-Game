@@ -1,4 +1,8 @@
 #pragma once 
+
+#ifndef CONSOLE_H
+#define CONSOLE_H
+
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h> 
@@ -178,6 +182,8 @@ void setWindowConsole(SHORT left, SHORT top, SHORT right, SHORT bottom) {
 	RECT rect = {left, top, right, bottom};
 	MoveWindow(hwnd, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, TRUE);	
 }
+
+#endif
 
 /*
 0 = Black      8 = Gray
